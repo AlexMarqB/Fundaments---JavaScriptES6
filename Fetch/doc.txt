@@ -1,0 +1,4 @@
+Este é um teste de Fecth para consumir documentos locais do pc
+De API já existente com .json()
+De arquivos css para o html através do fetch
+De HTML's externos e seus children
