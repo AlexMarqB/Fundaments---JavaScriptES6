@@ -77,3 +77,68 @@ about.then(r => r.text())
       document.querySelector('#paragraphEx').innerHTML = paragraph.innerText
       console.log(titulo)
    })
+
+//.blob() -> blob é um tipo de obj ultilizado para representação de dados de um arquivo, o blob pode ser ultilizado para transformarmos requisições de imagens por ex
+//ele gera um url unico
+//retorna tamanho em megas e o tipo da img
+
+const img = fetch('./imagem.png')
+
+img.then(r => r.blob())
+.then(body => {
+   const blobUrl = URL.createObjectURL(body) //cria um URL a partir de uma src
+   console.log(blobUrl)
+   const imgDOM = document.querySelector('img')
+   imgDOM.src = blobUrl
+})
+
+//.clone() -> ao ultilizarmos os metodos acima, text, json e blob a resposta é modificada.
+//Com o clone caso seja necessario ultilizar uma mesma response em diferentes valores, ele é usado
+
+const cepClone = fetch('https://viacep.com.br/ws/14403303/json/')
+
+cepClone.then(r => {
+   const r2 = r.clone()
+   r.text() //transforma o body do obj -> ou seja não podemos mudar novamente o tipo do dado
+   .then(text => {
+      console.log(text) //texto
+   })
+   r2.json()
+   .then(json => {
+      console.log(json) //obj
+   })
+   console.log(r)
+})
+.then(body => {
+   console.log(body)
+})
+
+//.headers -> é uma prop que possui os cabeçalhos da requisição é um tipo de dado iterável então podemos ultilizar o foreach para vermos cada um deles
+//headers mostram informações sobre a sua requisição, como tipo de arquivo, data de criação ou expirar
+
+const cepHeaders = cepClone
+
+cepHeaders.then(response => {
+   console.log(response)
+   response.headers.forEach(console.log) //retorna cada item da array com o index 
+})
+
+//status e ok -> retorna o status da requisição, se for 404, 200, 202 e mais o '.ok' retorna um valor booleano true para sucesso e false para sem sucesso
+
+const statusTest = fetch('docs.txt')
+
+statusTest.then(response => {
+   console.log(response.status) // tch.js:128     GET http://127.0.0.1:5500/Fetch/docs.txt 404 (Not Found)
+   if(response.status === 404) {
+      console.log('Página não existe')
+   }
+})
+
+//url e type -> .url retorna o url da requisição e .tyoe retorna o tipo da resposta(json, text, blob)
+//types
+// basic: feito na mesma origem
+// cors: feito em url body pode estar disponível
+// error: erro de conexão
+// opaque: no-cors, não permite acesso de outros sites
+
+
